@@ -1,11 +1,10 @@
 class game(running, window, entities)
 	method init()
 		# engine
-		entities[0] := entity(25, 50);
-		entities[1] := entity(50, 25);
+		while ?6 ~= 6 do entities.push(entity(?640, ?480));
 
 		# graphics
-		window := open("blizb", "g", "size=800,600", "bg=black", "fg=white");
+		window := open("blizb", "g", "size=640,480", "bg=black", "fg=white");
 
 		running := 1;
 	end
@@ -22,9 +21,9 @@ class game(running, window, entities)
 
 	method render()
 		every e := !entities do {
-			e.render(window)
+			e.render(window);
 		}
-		WSync(window)
+		WSync(window);
 	end
 
 	method clean()
