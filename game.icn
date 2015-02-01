@@ -1,27 +1,37 @@
-class game(running, i)
+class game(running, window, entities)
 	method init()
-		write("game:init");
+		# engine
+		entities[0] := entity(25, 50);
+		entities[1] := entity(50, 25);
+
+		# graphics
+		window := open("blizb", "g", "size=800,600", "bg=black", "fg=white");
+
 		running := 1;
 	end
 
 	method update()
-		write("game:update");
+		events := Pending(window);
+		every e := !events do {
+			if e === -11 then running := 0;
+		}
 	end
 
 	method process()
-		write("game:process");
-		if (i := i + 1) = 0 then running := 0;
 	end
 
 	method render()
-		write("game:render");
+		every e := !entities do {
+			e.render(window)
+		}
+		WSync(window)
 	end
 
 	method clean()
-		write("game:clean");
 	end
 
 initially
 	running := 0;
-	i := -1000;
+	window := &null;
+	entities := [];
 end

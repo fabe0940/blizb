@@ -1,5 +1,5 @@
 CC = unicon
-OBJ = blizb.u game.u
+OBJ = blizb.u entity.u game.u
 APPLICATION_NAME = blizb
 
 .PHONY : all rebuild clean
@@ -15,6 +15,9 @@ $(APPLICATION_NAME) : $(OBJ)
 
 blizb.u : blizb.icn
 	$(CC) -c blizb.icn
+
+entity.u : entity.icn
+	$(CC) -c entity.icn
 
 game.u : game.icn
 	$(CC) -c game.icn

@@ -1,0 +1,8 @@
+class entity(x, y)
+    method render(w)
+        FillRectangle(w, x, y, 10, 10);
+    end
+initially
+    x := 0;
+    y := 0;
+end
