@@ -1,0 +1,6 @@
+# VIM temp files
+*.swp
+
+# Unicon build files
+*.u
+uniclass.*
