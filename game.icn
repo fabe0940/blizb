@@ -1,0 +1,27 @@
+class game(running, i)
+	method init()
+		write("game:init");
+		running := 1;
+	end
+
+	method update()
+		write("game:update");
+	end
+
+	method process()
+		write("game:process");
+		if (i := i + 1) = 0 then running := 0;
+	end
+
+	method render()
+		write("game:render");
+	end
+
+	method clean()
+		write("game:clean");
+	end
+
+initially
+	running := 0;
+	i := -1000;
+end

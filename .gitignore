@@ -4,3 +4,6 @@
 # Unicon build files
 *.u
 uniclass.*
+
+# Final binaries
+blizb
