@@ -1,9 +1,12 @@
 global WIN_WIDTH, WIN_HEIGHT
+global FPS, FRAME_MS
 
 procedure main()
 	# set globals
-	WIN_WIDTH := 640;
-	WIN_HEIGHT := 480;
+	WIN_WIDTH := 800;
+	WIN_HEIGHT := 600;
+	FPS := 60;
+	FRAME_MS := (1000 / FPS);
 
 	# create game object
     main := game();
@@ -13,9 +16,11 @@ procedure main()
 
 	# main game loop
 	while main.running = 1 do {
+		t := &time;
 		main.update();
 		main.process();
 		main.render();
+		while(&time <= t + FRAME_MS);
 	}
 
 	# clean up
