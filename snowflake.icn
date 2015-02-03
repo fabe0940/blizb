@@ -1,0 +1,10 @@
+global WIN_WIDTH, WIN_HEIGHT
+
+class snowflake:entity()
+	method process()
+		y := y + 1;
+	
+		if(y > WIN_HEIGHT) then fail;
+	end
+initially
+end

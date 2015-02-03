@@ -1,10 +1,12 @@
+global WIN_WIDTH, WIN_HEIGHT
+
 class game(running, window, entities)
 	method init()
 		# engine
-		while ?6 ~= 6 do push(entities, entity(?640, ?480));
+		while ?6 ~= 6 do push(entities, snowflake(?WIN_WIDTH, 0));
 
 		# graphics
-		window := open("blizb", "g", "size=640,480", "bg=black", "fg=white");
+		window := open("blizb", "g", "size=" || WIN_WIDTH || "," || WIN_HEIGHT, "bg=black", "fg=white");
 
 		running := 1;
 	end
@@ -17,12 +19,27 @@ class game(running, window, entities)
 	end
 
 	method process()
+		if ?6 == 6 then push(entities, snowflake(?WIN_WIDTH, 0));
+
+		every i := 1 to *entities do {
+			if entities[i].process() then {
+				# remove entities[i]
+				# a total hack; can't find a bloody thing in the docs
+				tmp := entities[i];
+				entities[i] := entities[1];
+				entities[1] := tmp;
+				pop(entities);
+			}
+		}
 	end
 
 	method render()
+		EraseArea(window, 0, 0, WIN_WIDTH, WIN_HEIGHT);
+
 		every e := !entities do {
 			e.render(window);
 		}
+
 		WSync(window);
 	end
 
