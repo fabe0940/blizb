@@ -34,9 +34,12 @@ class game(running, window, entities)
 	end
 
 	method render()
+		EraseArea(window, 0, 0, WIN_WIDTH, WIN_HEIGHT);
+
 		every e := !entities do {
 			e.render(window);
 		}
+
 		WSync(window);
 	end
 
