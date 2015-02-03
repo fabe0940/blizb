@@ -1,13 +1,25 @@
+global WIN_WIDTH, WIN_HEIGHT
+
 procedure main()
+	# set globals
+	WIN_WIDTH := 640;
+	WIN_HEIGHT := 480;
+
+	# create game object
     main := game();
 
+	# set up game
 	main.init();
 
+	# main game loop
 	while main.running = 1 do {
 		main.update();
 		main.process();
 		main.render();
 	}
 
+	# clean up
 	main.clean();
+
+	exit(0);
 end

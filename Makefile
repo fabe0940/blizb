@@ -1,5 +1,5 @@
 CC = unicon
-OBJ = blizb.u entity.u game.u
+OBJ = blizb.u entity.u game.u snowflake.u
 APPLICATION_NAME = blizb
 
 .PHONY : all rebuild clean
@@ -21,6 +21,9 @@ entity.u : entity.icn
 
 game.u : game.icn
 	$(CC) -c game.icn
+
+snowflake.u : snowflake.icn
+	$(CC) -c snowflake.icn
 
 clean :
 	rm -f $(APPLICATION_NAME) $(OBJ) uniclass.*

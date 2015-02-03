@@ -1,9 +1,12 @@
 class entity(x, y)
-    method render(w)
-        FillRectangle(w, x, y, 10, 10);
-    end
+	method render(w)
+	    FillRectangle(w, x, y, 10, 10);
+	end
+
+	method process()
+	end
 
 initially
-    if /x then x := 0;
-    if /y then y := 0;
+	if /x then x := 0;
+	if /y then y := 0;
 end
