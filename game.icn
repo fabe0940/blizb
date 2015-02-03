@@ -1,7 +1,7 @@
 class game(running, window, entities)
 	method init()
 		# engine
-		while ?6 ~= 6 do entities.push(entity(?640, ?480));
+		while ?6 ~= 6 do push(entities, entity(?640, ?480));
 
 		# graphics
 		window := open("blizb", "g", "size=640,480", "bg=black", "fg=white");
