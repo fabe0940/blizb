@@ -1,9 +1,11 @@
 class entity(x, y)
 	method render(w)
-	    FillRectangle(w, x, y, 10, 10);
+		WAttrib(w, "fg=#FFFFFF");
+		FillRectangle(w, x, y, 10, 10);
 	end
 
 	method process()
+		write("entity:process");
 	end
 
 initially

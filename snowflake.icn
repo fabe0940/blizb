@@ -1,10 +1,20 @@
 global WIN_WIDTH, WIN_HEIGHT
 
-class snowflake:entity()
-	method process()
-		y := y + 1;
-	
-		if(y > WIN_HEIGHT) then fail;
+class snowflake:entity(x, y, speed, gravity, drift)
+	method render(w)
+		WAttrib(w, "fg=#FFFFFF");
+		write(ReadImage(w, "snow.jpg", x - 16, y - 16));
+		FillRectangle(w, x  - 16, y - 16, 32, 32);
 	end
+
+	method process()
+		speed := speed + gravity;
+		y := y + speed;
+		x := x + drift;
+
+		if (y > WIN_HEIGHT) then return "remove";
+		if (x < 0) | (x > WIN_WIDTH) then return "remove";
+	end
+
 initially
 end

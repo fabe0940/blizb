@@ -1,44 +1,152 @@
 global WIN_WIDTH, WIN_HEIGHT
 
-class game(running, window, entities)
+class game(running, window, score, p, snowflakes, bullets, ground, kbd, kmap)
 	method init()
-		# engine
-		while ?6 ~= 6 do push(entities, snowflake(?WIN_WIDTH, 0));
+		# spawn entities
+		p := player(WIN_WIDTH / 2, WIN_HEIGHT - 32);
 
-		# graphics
-		window := open("blizb", "g", "size=" || WIN_WIDTH || "," || WIN_HEIGHT, "bg=black", "fg=white");
+		# window
+		window := open("blizb", "g", "size=" || WIN_WIDTH || "," || WIN_HEIGHT);
+		WAttrib(window, "bg=#05050F");
+		WAttrib(window, "inputmask=k");
 
 		running := 1;
+		score := 0;
 	end
 
 	method update()
-		events := Pending(window);
-		every e := !events do {
+		while(*Pending(window) > 0) do {
+			e := Event(window);
+			if e == kmap.KEY_LEFT_PRESS then kbd.press("left");
+			if e == kmap.KEY_LEFT_RELEASE then kbd.release("left");
+			if e == kmap.KEY_RIGHT_PRESS then kbd.press("right");
+			if e == kmap.KEY_RIGHT_RELEASE then kbd.release("right");
+			if e == kmap.KEY_SPACE_PRESS & *bullets < p.ammo then {
+				score := score - 1;
+				if score < 0 then score := 0;
+				push(bullets, bullet(p.x, WIN_HEIGHT - 64, 10));
+			}
 			if e === -11 then running := 0;
 		}
 	end
 
 	method process()
-		if ?6 == 6 then push(entities, snowflake(?WIN_WIDTH, 0));
+		if p.process(kbd, ground) == "stuck" then {
+			WAttrib(window, "fg=#FF0000");
+			WAttrib(window, "font=sans,64");
+			GotoXY(window, 220, 300);
+			writes(window, "GAME OVER");
+			WSync(window);
 
-		every i := 1 to *entities do {
-			if entities[i].process() then {
-				# remove entities[i]
-				# a total hack; can't find a bloody thing in the docs
-				tmp := entities[i];
-				entities[i] := entities[1];
-				entities[1] := tmp;
-				pop(entities);
+			delay(2000);
+
+			running := 0;
+		}
+
+		every i := 1 to *snowflakes do {
+			if snowflakes[i].process() == "remove" then {
+				index := (snowflakes[i].x / 32) + 1;
+				ground[index] := ground[index] + 20;
+				if ground[index] > 100 then ground[index] := 100;
+
+				snowflakes[1] :=: snowflakes[i];
+				pop(snowflakes);
 			}
+		}
+
+		every i := 1 to *bullets do {
+			if bullets[i].process() == "remove" then {
+				bullets[1] :=: bullets[i];
+				pop(bullets);
+			}
+		}
+
+		every i := 1 to *bullets do {
+			brow := integer(bullets[i].y) / 32;
+			bcol := integer(bullets[i].x) / 32;
+			every j := 1 to *snowflakes do {
+				srow := integer(snowflakes[j].y) / 32;
+				scol := integer(snowflakes[j].x) / 32;
+
+				if brow = srow & bcol = scol then {
+					score := score + 10;
+
+					bullets[i] :=: bullets[1];
+					pop(bullets);
+
+					snowflakes[j] :=: snowflakes[1];
+					pop(snowflakes);
+				}
+			}
+		}
+
+		total := 0;
+		every i := 1 to *ground do {
+			total := total + ground[i];
+		}
+		total := total / *ground;
+
+		if total = 100 then {
+			WAttrib(window, "fg=#FF0000");
+			WAttrib(window, "font=sans,64");
+			GotoXY(window, 220, 300);
+			writes(window, "GAME OVER");
+			WSync(window);
+
+			delay(2000);
+
+			running := 0;
+		}
+
+		if ?30 == 1 then {
+			drift := (real((?200) - 100) / 100.0);
+			push(snowflakes, snowflake(?(WIN_WIDTH - 64) + 32, 0, 0.75, 0.05, drift));
 		}
 	end
 
 	method render()
 		EraseArea(window, 0, 0, WIN_WIDTH, WIN_HEIGHT);
 
-		every e := !entities do {
-			e.render(window);
+		WAttrib(window, "fg=#0F0F0F");
+		FillRectangle(window, 0, WIN_HEIGHT - 32, WIN_WIDTH, 32);
+
+		every s := !snowflakes do {
+			s.render(window);
 		}
+
+		every b := !bullets do {
+			b.render(window);
+		}
+
+		p.render(window);
+
+		WAttrib(window, "fg=#F3F3F3");
+		every i := 1 to *ground do {
+			height := 32.0 * real(ground[i]) / 100.0;
+			FillRectangle(window, (i - 1) * 32, WIN_HEIGHT - height, 32, height);
+		}
+
+		fill := 0;
+		i := 0;
+		every !ground do {
+			i := i + 1;
+			fill := fill + ground[i];
+		}
+		len := (fill / i) * 2;
+		WAttrib(window, "fg=#FF0000");
+		FillRectangle(window, 20, 20, len, 30);
+
+		WAttrib(window, "fg=#FF3300");
+		WAttrib(window, "font=sans,32");
+
+		GotoXY(window, 240, 40);
+		writes(window, (fill / i) || "% Filled");
+
+		GotoXY(window, 20, 80);
+		writes(window, "Ammo: " || (p.ammo - *bullets));
+
+		GotoXY(window, 20, 120);
+		writes(window, "Score: " || score);
 
 		WSync(window);
 	end
@@ -49,5 +157,10 @@ class game(running, window, entities)
 initially
 	running := 0;
 	window := &null;
-	entities := [];
+	p := &null;
+	snowflakes := [];
+	bullets := [];
+	ground := list(WIN_WIDTH / 32, 0);
+	kbd := keyboard();
+	kmap := keymap();
 end
