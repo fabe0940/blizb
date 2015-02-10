@@ -1,0 +1,21 @@
+class player:entity(x, y, speed, ammo)
+	method render(w)
+		WAttrib(w, "fg=#0000FF");
+		FillRectangle(w, x - 32, WIN_HEIGHT - 64, 64, 64);
+	end
+
+	method process(kbd, gnd)
+		scale := (100.0 - real(gnd[(x / 32) + 1])) / 100.0;
+		delta := speed * scale;
+		if kbd.is_pressed("left") then x := x - delta;
+		if kbd.is_pressed("right") then x := x + delta;
+		if x < 32 then x:= 32;
+		if x > WIN_WIDTH - 32 then x := WIN_WIDTH - 32;
+
+		if delta = 0 then return "stuck";
+	end
+
+initially
+	speed := 10;
+	ammo := 5;
+end
