@@ -1,0 +1,28 @@
+class keyboard(key_up, key_down, key_left, key_right)
+	method is_pressed(dir)
+		if dir == "up" & key_up = 1 then return key_up;
+		if dir == "down" & key_down = 1 then return key_down;
+		if dir == "left" & key_left = 1 then return key_left;
+		if dir == "right" & key_right = 1 then return key_right;
+	end
+
+	method press(dir)
+		if dir == "up" then key_up := 1;
+		if dir == "down" then key_down := 1;
+		if dir == "left" then key_left := 1;
+		if dir == "right" then key_right := 1;
+	end
+
+	method release(dir)
+		if dir == "up" then key_up := 0;
+		if dir == "down" then key_down := 0;
+		if dir == "left" then key_left := 0;
+		if dir == "right" then key_right := 0;
+	end
+
+initially
+	key_up := 0;
+	key_down := 0;
+	key_left := 0;
+	key_right := 0;
+end

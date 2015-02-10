@@ -1,10 +1,34 @@
-The premise is: you are shooting a heat ray into the sky from a mobile snowplow
-with a mounted heat gun that drives to and fro across the bottom of the screen,
-which represents a vital arterial street that it is your job to keep clear. Snow
-is coming in thicker and thicker as time progresses, but you can shoot the
-flakes if you can get under them. Your gun moves very quickly from side to side.
-If you fail to shoot a flake and it lands on the ground, it sticks, and the more
-snow that accumulates, the slower the snowplow's movement. The snowplow can
-maybe grind down some of the snow, and shove it off to the side, but it is a
-battle that you can never win. The game is over when the snowplow can no longer
-move.
+Blizzard Blast
+==============
+
+
+Compilation
+-----------
+
+Just run `make`. An executable named `blizb` will be generated.
+
+
+Playing
+-------
+
+The goal of the game is to accumulate points by shooting down the snow
+which is covering the city. As snow accumulates, however, your vehicle
+will move more and more slowly, until you can no longer move and the
+game ends.
+
+
+Controls
+--------
+
+Use the left and right arrows to move your vehicle. Press the spacebar
+to fire a snow melting laser beam.
+
+
+
+Notes
+-----
+
+I made up some nice sprites for this game with my roommate, but I was
+unable to get image code to work in unicon. Thus, the player is the
+blue rectangle, the snowflakes are the white rectangles, and the
+lasers are the red rectangles.

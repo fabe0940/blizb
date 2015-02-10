@@ -1,0 +1,16 @@
+class bullet:entity(x, y, speed)
+	method render(w)
+		WAttrib(w, "fg=#FF0000");
+		FillRectangle(w, x - 16, y - 16, 32, 32);
+	end
+
+	method process()
+		y := y - speed;
+		if y < 16 then return "remove";
+	end
+
+initially
+	if /x then x := 0;
+	if /y then y := 0;
+	if /speed then speed := 1;
+end

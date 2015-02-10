@@ -10,6 +10,10 @@ all : $(APPLICATION_NAME)
 $(APPLICATION_NAME) : $(OBJ)
 	$(CC) $^ -o  $@
 
+bullet.u : entity.u
+player.u : entity.u
+snowflake.u : entity.u
+
 %.u : %.icn
 	$(CC) -c $<
 
